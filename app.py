@@ -8,6 +8,7 @@ from wtforms.validators import DataRequired
 from flask_wtf.csrf import CSRFProtect
 import datetime
 import json
+import random
 
 app = Flask(__name__)
 firebase = firebase.FirebaseApplication(firebase_path, None)
@@ -39,7 +40,12 @@ def test():
 def index():
     form = NewEvent()
     if form.validate_on_submit():
-        firebase.put('/events', form.event_name.data, form.serialize_entry())
+        curr_entries = firebase.get('/events')
+        new_key = random.randint(1, 100000000)
+        while (new_key not in curr_entries.keys):
+            new_key = random.randint(1, 100000000)
+
+        firebase.put('/events', new_key, form.serialize_entry())
     return render_template('index.html', form=form)
 
 if __name__ == '__main__':
