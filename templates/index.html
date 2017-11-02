@@ -1,0 +1,16 @@
+{% block content %}
+<h3>Add new Event</h3>
+<form action="" method="post" name="api">
+  {% for field in form %}
+      {% if field != form.csrf_token %}
+          {{ field.label }}<br>
+      {% endif %}
+      {{ field }}<br>
+
+      {% for error in field.errors %}
+          <span style="color: red;">[{{ error }}]</span>
+      {% endfor %}<br>
+  {% endfor %}
+  <input type ="submit" value="Add" class="btn btn-sm btn-primary">
+</form>
+{% endblock %}
